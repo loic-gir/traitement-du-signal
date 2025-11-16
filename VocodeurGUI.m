@@ -1,10 +1,10 @@
 function VocodeurGUI()
-% Interface graphique pour le vocodeur de phase
+% Interface graphique
 
-% Création de la fenêtre en plein écran
+% Création de la fenêtre
 fig = figure('Name', 'Vocodeur de Phase', 'MenuBar', 'none', 'Units', 'normalized', 'OuterPosition', [0 0 1 1]);
 
-% Variables pour stocker les données audio
+% Variables données audio
 y = [];
 Fs = 44100;
 y_processed = [];
@@ -15,7 +15,8 @@ uicontrol('Style', 'text', 'String', '--- CONTROLES ---', ...
 
 % Charger fichier
 uicontrol('Style', 'pushbutton', 'String', 'Charger Audio', ...
-          'Units', 'normalized', 'Position', [0.02, 0.86, 0.15, 0.05], 'Callback', @chargerAudio);
+          'Units', 'normalized', 'Position', [0.02, 0.86, 0.15, 0.05], 'Callback', @chargerAudio, ...
+          'BackgroundColor',[0.2 0.4 0.6],'ForegroundColor',[1 1 1]);
 
 txt_fichier = uicontrol('Style', 'text', 'String', 'Aucun fichier chargé', ...
                         'Units', 'normalized', 'Position', [0.02, 0.82, 0.15, 0.03]);
@@ -29,7 +30,8 @@ slider_vitesse = uicontrol('Style', 'slider', 'Min', 0.5, 'Max', 2, 'Value', 1, 
                            'Units', 'normalized', 'Position', [0.02, 0.73, 0.15, 0.03], ...
                            'Callback', @updateVitesseLabel);
 uicontrol('Style', 'pushbutton', 'String', 'Modifier Vitesse', ...
-          'Units', 'normalized', 'Position', [0.02, 0.68, 0.15, 0.04], 'Callback', @modifierVitesse);
+          'Units', 'normalized', 'Position', [0.02, 0.68, 0.15, 0.04], 'Callback', @modifierVitesse, ...
+          'BackgroundColor',[0.3 0.5 0.7],'ForegroundColor',[1 1 1]);
 
 % Hauteur
 uicontrol('Style', 'text', 'String', 'Hauteur:', ...
@@ -40,7 +42,8 @@ slider_hauteur = uicontrol('Style', 'slider', 'Min', 0.5, 'Max', 2, 'Value', 1, 
                            'Units', 'normalized', 'Position', [0.02, 0.59, 0.15, 0.03], ...
                            'Callback', @updateHauteurLabel);
 uicontrol('Style', 'pushbutton', 'String', 'Modifier Hauteur', ...
-          'Units', 'normalized', 'Position', [0.02, 0.54, 0.15, 0.04], 'Callback', @modifierHauteur);
+          'Units', 'normalized', 'Position', [0.02, 0.54, 0.15, 0.04], 'Callback', @modifierHauteur, ...
+          'BackgroundColor',[0.3 0.5 0.7],'ForegroundColor',[1 1 1]);
 
 % Robotisation
 uicontrol('Style', 'text', 'String', 'Freq Robot (Hz):', ...
@@ -48,29 +51,33 @@ uicontrol('Style', 'text', 'String', 'Freq Robot (Hz):', ...
 edit_freq_robot = uicontrol('Style', 'edit', 'String', '500', ...
                             'Units', 'normalized', 'Position', [0.125, 0.48, 0.045, 0.03]);
 uicontrol('Style', 'pushbutton', 'String', 'Robotiser', ...
-          'Units', 'normalized', 'Position', [0.02, 0.43, 0.15, 0.04], 'Callback', @robotiser);
+          'Units', 'normalized', 'Position', [0.02, 0.43, 0.15, 0.04], 'Callback', @robotiser, ...
+          'BackgroundColor',[0.3 0.5 0.7],'ForegroundColor',[1 1 1]);a
 
 % Lecture
 uicontrol('Style', 'text', 'String', '--- LECTURE ---', ...
           'Units', 'normalized', 'Position', [0.02, 0.36, 0.15, 0.03], 'FontWeight', 'bold');
 
 uicontrol('Style', 'pushbutton', 'String', 'Ecouter Original', ...
-          'Units', 'normalized', 'Position', [0.02, 0.30, 0.15, 0.05], 'Callback', @ecouterOriginal);
+          'Units', 'normalized', 'Position', [0.02, 0.30, 0.15, 0.05], 'Callback', @ecouterOriginal, ...
+          'BackgroundColor',[0.2 0.4 0.6],'ForegroundColor',[1 1 1]);
 uicontrol('Style', 'pushbutton', 'String', 'Ecouter Traité', ...
-          'Units', 'normalized', 'Position', [0.02, 0.24, 0.15, 0.05], 'Callback', @ecouterTraite);
+          'Units', 'normalized', 'Position', [0.02, 0.24, 0.15, 0.05], 'Callback', @ecouterTraite, ...
+          'BackgroundColor',[0.2 0.4 0.6],'ForegroundColor',[1 1 1]);
 
 uicontrol('Style', 'pushbutton', 'String', 'Réinitialiser', ...
-          'Units', 'normalized', 'Position', [0.02, 0.16, 0.15, 0.04], 'Callback', @reinitialiser);
+          'Units', 'normalized', 'Position', [0.02, 0.16, 0.15, 0.04], 'Callback', @reinitialiser, ...
+          'BackgroundColor',[0.5 0.5 0.5],'ForegroundColor',[1 1 1]);
 
-% === PARTIE DROITE : GRAPHIQUES ===
-% Signal temporel original
+% PARTIE DROITE : GRAPHIQUES 
+% Signal original
 ax1 = axes('Position', [0.22, 0.72, 0.75, 0.24]);
 title('Signal Original - Domaine Temporel');
 xlabel('Temps (s)');
 ylabel('Amplitude');
 grid on;
 
-% Signal temporel traité
+% Signal traité
 ax2 = axes('Position', [0.22, 0.40, 0.75, 0.24]);
 title('Signal Traité - Domaine Temporel');
 xlabel('Temps (s)');
@@ -85,7 +92,7 @@ title('Spectrogramme Original');
 ax4 = axes('Position', [0.62, 0.08, 0.35, 0.24]);
 title('Spectrogramme Traité');
 
-% === FONCTIONS ===
+% FONCTIONS 
     function chargerAudio(~, ~)
         [nom, chemin] = uigetfile('*.wav', 'Choisir un fichier audio');
         if nom ~= 0
@@ -94,7 +101,7 @@ title('Spectrogramme Traité');
             y_processed = y;
             set(txt_fichier, 'String', nom);
             
-            % Signal temporel
+            % Signal
             t = (0:length(y)-1) / Fs;
             plot(ax1, t, y);
             title(ax1, ['Signal Original: ' nom]);
@@ -109,17 +116,17 @@ title('Spectrogramme Traité');
         end
     end
 
-    function updateVitesseLabel(~, ~)
+    function updateVitesseLabel(~,~)
         val = get(slider_vitesse, 'Value');
         set(txt_vitesse, 'String', sprintf('%.2f', val));
     end
 
-    function updateHauteurLabel(~, ~)
+    function updateHauteurLabel(~,~)
         val = get(slider_hauteur, 'Value');
         set(txt_hauteur, 'String', sprintf('%.2f', val));
     end
 
-    function modifierVitesse(~, ~)
+    function modifierVitesse(~,~)
         if isempty(y)
             return;
         end
@@ -128,7 +135,7 @@ title('Spectrogramme Traité');
         afficherTraite();
     end
 
-    function modifierHauteur(~, ~)
+    function modifierHauteur(~,~)
         if isempty(y)
             return;
         end
@@ -139,7 +146,7 @@ title('Spectrogramme Traité');
         afficherTraite();
     end
 
-    function robotiser(~, ~)
+    function robotiser(~,~)
         if isempty(y)
             return;
         end
@@ -148,19 +155,19 @@ title('Spectrogramme Traité');
         afficherTraite();
     end
 
-    function ecouterOriginal(~, ~)
+    function ecouterOriginal(~,~)
         if ~isempty(y)
             soundsc(y, Fs);
         end
     end
 
-    function ecouterTraite(~, ~)
+    function ecouterTraite(~,~)
         if ~isempty(y_processed)
             soundsc(y_processed, Fs);
         end
     end
 
-    function reinitialiser(~, ~)
+    function reinitialiser(~,~)
         if ~isempty(y)
             y_processed = y;
             set(slider_vitesse, 'Value', 1);
