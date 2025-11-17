@@ -15,12 +15,12 @@ t = (0:N-1)' / Fs;  % Vecteur colonne pour correspondre a y
 
 % Modulation par une exponentielle complexe a la frequence fc
 % yrob(t) = y(t) * exp(j*2*pi*fc*t)
-signal_module = y .* exp(1i * 2 * pi * fc * t);
+signal = y .* exp(1i * 2 * pi * fc * t);
 
 % On recupere la partie reelle du signal module
-yrob = real(signal_module);
+rob = real(signal);
 
 % Normalisation pour eviter la saturation
-yrob = yrob / max(abs(yrob));
+rob = rob / max(abs(rob));
 
 end
